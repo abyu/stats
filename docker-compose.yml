@@ -19,6 +19,8 @@ services:
     restart: always
     ports:
       - 3000:3000
+    volumes:
+      - grafana-storage:/var/lib/grafana
   stats:
     build: .
     restart: always
@@ -30,3 +32,4 @@ services:
       - postgresdb
 volumes:
   pgdata:
+  grafana-storage:
