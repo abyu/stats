@@ -1,0 +1,32 @@
+services:
+  postgresdb:
+    image: postgres:14-alpine
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_USER=shershaah
+      - POSTGRES_PASSWORD=ranjha
+      - POSTGRES_DB=postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  grafana:
+    image: grafana/grafana
+    restart: always
+    ports:
+      - 3000:3000
+  stats:
+    build: .
+    restart: always
+    environment:
+      - DB_HOST=postgresdb
+      - DB_USER=shershaah
+      - DB_PASSWORD=ranjha
+    depends_on:
+      - postgresdb
+volumes:
+  pgdata:
