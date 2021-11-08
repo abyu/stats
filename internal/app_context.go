@@ -28,7 +28,7 @@ func BuildContext() (*AppContext, error){
 	}
 	appCtx.DB = db
 	appCtx.DBMigration = NewDBMigration(NewMetricsStoreMigrator(db))
-	appCtx.FetchTask = NewFetchTask(NewMetricsStore(db), 30 * time.Second)
+	appCtx.FetchTask = NewFetchTask(NewMetricsStore(db), 30 * time.Minute)
 	return appCtx, nil
 }
 
