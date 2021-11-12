@@ -2,6 +2,7 @@ package internal
 
 import (
 	"encoding/json"
+	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -38,8 +39,16 @@ func GetTokenBalance(walletAddress, contractAddress string) float64 {
 	all, _ := ioutil.ReadAll(response.Body)
 
 	var responseJson tokenBalanceResponse
-	json.Unmarshal(all, &responseJson)
-	float, _ := strconv.ParseFloat(responseJson.Result, 64)
+	err := json.Unmarshal(all, &responseJson)
+	if err != nil {
+		log.Errorf("Error fetching token balance, err: %v", err)
+		return 0
+	}
+	float, err := strconv.ParseFloat(responseJson.Result, 64)
+	if err != nil {
+		log.Errorf("Unable to convert result(%s) to a valid format, err: %v", responseJson.Result, err)
+		return 0
+	}
 
 	return float/ float64(1000000000)
 }
